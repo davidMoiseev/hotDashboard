@@ -40,6 +40,7 @@ class FakeConnection:
         self.dataStuff = ['Elbow FeedForward', "Elbow Proportional", "Elbow Integral", "Elbow Derviative", "Elbow Total Command"]
 
         self.time = 0
+        self.varSmall = 0
         self.var = 0
 
     def fakeRobot(self):
@@ -55,8 +56,8 @@ class FakeConnection:
                         self.data[variable].append(self.time)
                         self.time += 2
                     elif variable in self.dataStuff:
-                        self.data[variable].append(self.var)
-                        self.var += .01
+                        self.data[variable].append(self.varSmall)
+                        self.varSmall += .001
                     else:
                         self.data[variable].append(self.var)
                         self.var += .1

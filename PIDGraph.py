@@ -9,9 +9,13 @@ import matplotlib.style as mplstyle
 import VarManager
 
 class PIDGraph:
-    def __init__(self,parent,data,addVarManager=False,title=None,xAxisName=None,feedForward=None,p=None,i=None,d=None,total=None) -> None:
+    def __init__(self,parent,data,addVarManager=False,title=None,xAxisName=None,feedForward=None,p=None,i=None,d=None,total=None, 
+                 row=None, column=None, graphType=None) -> None:
         mplstyle.use('fast')
         self.title = title
+        self.row = row
+        self.graphType = graphType
+        self.column = column
         self.xAxisName = xAxisName
         self.feedForward = feedForward
         self.p = p
@@ -32,7 +36,11 @@ class PIDGraph:
             self.parent.rowconfigure(0, weight=1)
         self.canvas = FigureCanvasTkAgg(self.fig,master = self.parent)
         self.canvas.get_tk_widget().grid(row = 0, column=0 , sticky=(N,E,S,W))
-        # self.parent.bind("<Configure>",self.resize)
+
+        self.replace()
+
+    def replace(self):
+        self.parent.grid(row=self.row,column=self.column,sticky=(N, W, S,E),padx=10, pady=10)
 
     def draw(self):
         self.ax.clear()
