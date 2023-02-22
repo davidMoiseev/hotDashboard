@@ -49,10 +49,10 @@ class Graph:
             self.ax.plot(time, yEsitmated,'r-',label="Estimate")
             self.ax.plot(time, actualCommand, 'k-x', label = "Actual")
 
-        # if time > 20:
-        #     pass
-        # else:
-        plt.xticks(np.arange(max(time)-20, max(time), 1.0))
+        if max(time) > 20:
+            self.ax.set_xlim([max(time)-20, max(time)])
+            
+        plt.xticks(np.arange(max(time), max(time), 1.0))
         
         yCmin = min(yCommaand)
         yEmin = min(yEsitmated)
