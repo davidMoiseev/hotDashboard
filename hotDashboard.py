@@ -8,7 +8,7 @@ import PIDGraph
 import ctypes
 import FakeConnection
 
-test = False
+test = True
 
 variablesToLog=['FPGA Time', "Match Time","Commanded X","Estimated X","Commanded Y","Estimated Y","Commanded Theta","Estimated Theta",'Robot Mode',
                 'Elbow Command', 'Elbow Angle', 'Elbow FeedForward', "Elbow Proportional", "Elbow Integral", "Elbow Derviative", "Elbow Total Command",
@@ -29,6 +29,7 @@ ws = user32.GetSystemMetrics(0)
 hs = user32.GetSystemMetrics(1)
 print(f"{ws}x{hs}+0+0")
 root.geometry(f"{user32.GetSystemMetrics(0)}x{user32.GetSystemMetrics(1)-280}+0+0")
+root.title("Hot Dashboard")
 content = ttk.Frame(root)
 xFrame = Frame(root)
 yFrame = Frame(root)
@@ -53,9 +54,9 @@ name = ttk.Entry(root)
 
 if not test:
     # fileHandler = FileHandler.FileHandler(root,graphs=[xGraph,yGraph,thetaGraph],data = data)
-    connectionIndication = ConnectionIndicator.ConnectionIndicator(root,graphs=[xGraph,yGraph,thetaGraph,armGraph, pidGraph],data=data,variablesToLog=variablesToLog)
+    connectionIndication = ConnectionIndicator.ConnectionIndicator(root,graphs=[xGraph,yGraph,thetaGraph,armGraph,pidGraph],data=data,variablesToLog=variablesToLog)
 else:
-    connectionIndication = FakeConnection.FakeConnection(root,graphs=[xGraph,yGraph,thetaGraph,armGraph, pidGraph],data=data,variablesToLog=variablesToLog, controlVariables=controlVariables)
+    connectionIndication = FakeConnection.FakeConnection(root,graphs=[xGraph,yGraph,thetaGraph,armGraph,pidGraph],data=data,variablesToLog=variablesToLog, controlVariables=controlVariables)
 
 root.columnconfigure(0, weight=1)
 root.columnconfigure(1, weight=1)

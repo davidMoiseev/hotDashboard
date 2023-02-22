@@ -57,7 +57,7 @@ class FakeConnection:
                         self.time += 2
                     elif variable in self.dataStuff:
                         self.data[variable].append(self.varSmall)
-                        self.varSmall += .001
+                        self.varSmall += .005
                     else:
                         self.data[variable].append(self.var)
                         self.var += .1
@@ -76,10 +76,12 @@ class FakeConnection:
     def changeMode(self):
         if(self.robotMode == "Disabled"):
             self.robotMode = "Fake"
+            self.varSmall = 0
             self.time = 0
             self.var = 0
         else:
             self.robotMode = "Disabled"
+            self.varSmall = 0
             self.time = 0
             self.var = 0
 
