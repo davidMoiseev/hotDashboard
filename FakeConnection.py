@@ -14,15 +14,25 @@ class FakeConnection:
         self.variablesToLog = variablesToLog
         self.controllableVariables = controlVariables
 
+        self.screenType = "Drivetrain"
+
         self.frame = Frame(parent)
         self.frame.grid(column=0,row=0,columnspan=2,sticky=(N,W))
         self.graphs = graphs
         self.reconnectButton = ttk.Button(self.frame, text="reconnect", command=self.fakeRobot)
         self.reconnectButton.grid(column = 0, row = 0,sticky=(W))
         self.changeButton = ttk.Button(self.frame, text="changeMode", command=self.changeMode)
-        self.changeButton.grid(column = 2, row = 0,sticky=(W))
+        self.changeButton.grid(column = 1, row = 0,sticky=(W))
         self.ipAddress = Label(self.frame, text = "Test Fake Robot", fg = "blue")
-        self.ipAddress.grid(column = 1, row = 0,sticky=(W))
+        self.ipAddress.grid(column = 2, row = 0,sticky=(W))
+        self.drivetrainButton = ttk.Button(self.frame, text="Drivetrain", command=self.drivetrainButton)
+        self.drivetrainButton.grid(column=0, row=1, sticky=(W))
+        self.armButton = ttk.Button(self.frame, text="Arm", command=self.armButton)
+        self.armButton.grid(column=1, row=1, sticky=(W))
+        self.intakeButton = ttk.Button(self.frame, text="Intake", command=self.intakeButton)
+        self.intakeButton.grid(column=2, row=1, sticky=(W))
+        self.getScreenButton = ttk.Button(self.frame, text="Get Screen Type", command=self.getScreenType)
+        self.getScreenButton.grid(column=3, row=1, sticky=(W))
 
         self.robotMode = "Disabled"
         self.robotModePrev = ""
@@ -53,7 +63,12 @@ class FakeConnection:
                 else:
                     self.data[variable].append(self.robotMode)
             for graph in self.graphs:
-                graph.draw()
+                if(graph.graphType == self.screenType):
+                    graph.draw()
+                    graph.replace()
+                else:
+                    graph.parent.grid_remove()
+                
         self.robotModePrev = self.robotMode
         self.parent.after(10,self.fakeRobot)
 
@@ -67,4 +82,14 @@ class FakeConnection:
             self.time = 0
             self.var = 0
 
-    
+    def drivetrainButton(self):
+        self.screenType = "Drivetrain"
+
+    def armButton(self):
+        self.screenType = "Arm"
+
+    def intakeButton(self):
+        self.screenType = "Intake"
+
+    def getScreenType(self):
+        print(self.screenType)

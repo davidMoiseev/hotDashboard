@@ -9,9 +9,13 @@ import matplotlib.style as mplstyle
 import VarManager
 
 class Graph:
-    def __init__(self,parent,data,addVarManager=False,title=None,xAxisName=None,estimatedDataName=None,commandDataname=None, actualCommandDataName=None) -> None:
+    def __init__(self,parent,data,addVarManager=False,title=None,xAxisName=None,estimatedDataName=None,commandDataname=None, actualCommandDataName=None,
+                 graphType = None, row=None, column=None) -> None:
         mplstyle.use('fast')
         self.title = title
+        self.row = row
+        self.column = column
+        self.graphType = graphType
         self.xAxisName = xAxisName
         self.estimatedDataName = estimatedDataName
         self.commandDataname = commandDataname
@@ -30,8 +34,10 @@ class Graph:
             self.parent.rowconfigure(0, weight=1)
         self.canvas = FigureCanvasTkAgg(self.fig,master = self.parent)
         self.canvas.get_tk_widget().grid(row = 0, column=0 , sticky=(N,E,S,W))
-        # self.parent.bind("<Configure>",self.resize)
+        self.replace()
 
+    def replace(self):
+        self.parent.grid(row=self.row,column=self.column,sticky=(N, W, S,E),padx=10, pady=10)
 
     def draw(self):
         self.ax.clear()
