@@ -13,13 +13,25 @@ class ConnectionIndicator:
     def __init__(self,parent,graphs=None,data=None,variablesToLog=None):
         self.variablesToLog = variablesToLog
         self.protocol = 3
-        self.ip = "10.0.51.2"
+        self.ip = "10.0.68.2"
         self.data = data
         self.parent = parent
         self.frame = Frame(parent)
         self.frame.grid(column=0,row=0,columnspan=2,sticky=(N,W))
         self.graphs = graphs
         self.reconnectButton = ttk.Button(self.frame, text="reconnect", command=self.connectToRobot )
+
+        self.screenType = "Drivetrain"
+
+        self.drivetrainButton = ttk.Button(self.frame, text="Drivetrain", command=self.drivetrainButton)
+        self.drivetrainButton.grid(column=0, row=1, sticky=(W))
+        self.armButton = ttk.Button(self.frame, text="Arm", command=self.armButton)
+        self.armButton.grid(column=1, row=1, sticky=(W))
+        self.intakeButton = ttk.Button(self.frame, text="Intake", command=self.intakeButton)
+        self.intakeButton.grid(column=2, row=1, sticky=(W))
+        self.getScreenButton = ttk.Button(self.frame, text="Get Screen Type", command=self.getScreenType)
+        self.getScreenButton.grid(column=3, row=1, sticky=(W))
+
         self. ipAddress = Label(self.frame,
                             text = self.ip,
                             fg = "blue")
@@ -65,6 +77,22 @@ class ConnectionIndicator:
                 else:
                     self.data[variable].append(robotMode)
             for graph in self.graphs:
-                graph.draw()
+                if(graph.graphType == self.screenType):
+                    graph.draw()
+                    graph.replace()
+                else:
+                    graph.parent.grid_remove()
         self.robotModePrev = robotMode
         self.parent.after(10,self.connectToRobot)
+
+    def drivetrainButton(self):
+        self.screenType = "Drivetrain"
+
+    def armButton(self):
+        self.screenType = "Arm"
+
+    def intakeButton(self):
+        self.screenType = "Intake"
+
+    def getScreenType(self):
+        print(self.screenType)

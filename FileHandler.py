@@ -17,7 +17,7 @@ class FileHandler:
         self.loadFileButton = ttk.Button(self.frame, text="Load File", command=self.browseFiles )
         self. label_file_explorer = Label(self.frame,
                             text = "No file loaded",
-                            fg = "blue")
+                            fg = "blue") 
 
         self.recordDataVar = BooleanVar(value=True)
         self.recordData = ttk.Checkbutton(self.frame, text="Record Data", variable=self.recordDataVar, onvalue=True, command=self.fileLoadCheck)
