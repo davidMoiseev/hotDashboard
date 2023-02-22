@@ -27,7 +27,10 @@ class FakeConnection:
         self.robotMode = "Disabled"
         self.robotModePrev = ""
 
+        self.dataStuff = ['Elbow FeedForward', "Elbow Proportional", "Elbow Integral", "Elbow Derviative", "Elbow Total Command"]
+
         self.time = 0
+        self.var = 0
 
     def fakeRobot(self):
         print(self.robotMode)
@@ -38,11 +41,15 @@ class FakeConnection:
         elif self.robotMode != "Disabled":
             for variable in self.variablesToLog:
                 if variable != "Robot Mode":
-                    if variable != "FPGA Time":
-                        self.data[variable].append(1) # CHange to be whatever value you're getting from fake dev panel
-                    else:
+                    if variable == "FPGA Time":
                         self.data[variable].append(self.time)
-                        self.time += .2
+                        self.time += 2
+                    elif variable in self.dataStuff:
+                        self.data[variable].append(self.var)
+                        self.var += .01
+                    else:
+                        self.data[variable].append(self.var)
+                        self.var += .1
                 else:
                     self.data[variable].append(self.robotMode)
             for graph in self.graphs:
@@ -50,13 +57,14 @@ class FakeConnection:
         self.robotModePrev = self.robotMode
         self.parent.after(10,self.fakeRobot)
 
-    
     def changeMode(self):
         if(self.robotMode == "Disabled"):
             self.robotMode = "Fake"
             self.time = 0
+            self.var = 0
         else:
             self.robotMode = "Disabled"
             self.time = 0
+            self.var = 0
 
     
