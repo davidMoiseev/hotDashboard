@@ -43,7 +43,6 @@ class PIDGraph:
         d = self.data[self.d]
         total = self.data[self.total]
 
-
         self.ax.tick_params(axis='both', which='major', labelsize=16)
 
         self.ax.plot(time, feedForward, 'b-+',label="feedForward")
@@ -52,7 +51,10 @@ class PIDGraph:
         self.ax.plot(time, d, 'k-p',label="d")
         self.ax.plot(time, total, 'm-',label="total")
 
-        plt.xticks(np.arange(max(time)-20, max(time), 1.0))
+        if max(time) > 20:
+            self.ax.set_xlim([max(time)-20, max(time)])
+
+        plt.xticks(np.arange(max(time), max(time), 1.0))
 
         self.ax.set_ylim([-1.1,1.1])
 

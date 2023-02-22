@@ -6,10 +6,15 @@ import ConnectionIndicator
 import Graph
 import PIDGraph
 import ctypes
+import FakeConnection
+
+test = False
 
 variablesToLog=['FPGA Time', "Match Time","Commanded X","Estimated X","Commanded Y","Estimated Y","Commanded Theta","Estimated Theta",'Robot Mode',
                 'Elbow Command', 'Elbow Angle', 'Elbow FeedForward', "Elbow Proportional", "Elbow Integral", "Elbow Derviative", "Elbow Total Command",
                 'Elbow Command Actual']
+
+controlVariables = ["Commanded X","Estimated X","Commanded Y", "Robot Mode"]
 
 data = dict()
 
@@ -23,7 +28,7 @@ user32 = ctypes.windll.user32
 ws = user32.GetSystemMetrics(0)
 hs = user32.GetSystemMetrics(1)
 print(f"{ws}x{hs}+0+0")
-root.geometry(f"{user32.GetSystemMetrics(0)}x{user32.GetSystemMetrics(1)-500}+0+0")
+root.geometry(f"{user32.GetSystemMetrics(0)}x{user32.GetSystemMetrics(1)-280}+0+0")
 content = ttk.Frame(root)
 xFrame = Frame(root)
 yFrame = Frame(root)
@@ -47,8 +52,11 @@ xFrame.grid(row=1,column=0,sticky=(N, W, S,E),padx=5, pady=5)
 namelbl = ttk.Label(root, text="Hot Dashboard")
 name = ttk.Entry(root)
 
-# fileHandler = FileHandler.FileHandler(root,graphs=[xGraph,yGraph,thetaGraph],data = data)
-connectionIndication = ConnectionIndicator.ConnectionIndicator(root,graphs=[xGraph,yGraph,pidGraph,armGraph],data=data,variablesToLog=variablesToLog)
+if not test:
+    # fileHandler = FileHandler.FileHandler(root,graphs=[xGraph,yGraph,thetaGraph],data = data)
+    connectionIndication = ConnectionIndicator.ConnectionIndicator(root,graphs=[xGraph,yGraph,pidGraph,armGraph],data=data,variablesToLog=variablesToLog)
+else:
+    connectionIndication = FakeConnection.FakeConnection(root,graphs=[xGraph,yGraph,pidGraph,armGraph],data=data,variablesToLog=variablesToLog, controlVariables=controlVariables)
 
 root.columnconfigure(0, weight=1)
 root.columnconfigure(1, weight=1)
