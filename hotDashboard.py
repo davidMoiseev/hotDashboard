@@ -8,7 +8,7 @@ import PIDGraph
 import ctypes
 import FakeConnection
 
-test = True
+test = False
 
 variablesToLog=['FPGA Time', "Match Time","Commanded X","Estimated X","Commanded Y","Estimated Y","Commanded Theta","Estimated Theta",'Robot Mode',
                 'Elbow Command', 'Elbow Angle', 'Elbow FeedForward', "Elbow Proportional", "Elbow Integral", "Elbow Derviative", "Elbow Total Command",
