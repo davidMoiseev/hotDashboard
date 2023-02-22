@@ -13,7 +13,7 @@ class ConnectionIndicator:
     def __init__(self,parent,graphs=None,data=None,variablesToLog=None):
         self.variablesToLog = variablesToLog
         self.protocol = 3
-        self.ip = "10.0.51.2"
+        self.ip = "10.0.68.2"
         self.data = data
         self.parent = parent
         self.frame = Frame(parent)

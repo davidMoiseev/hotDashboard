@@ -8,14 +8,16 @@ NavigationToolbar2Tk)
 import matplotlib.style as mplstyle
 import VarManager
 
-class Graph:
-    def __init__(self,parent,data,addVarManager=False,title=None,xAxisName=None,estimatedDataName=None,commandDataname=None, actualCommandDataName=None) -> None:
+class PIDGraph:
+    def __init__(self,parent,data,addVarManager=False,title=None,xAxisName=None,feedForward=None,p=None,i=None,d=None,total=None) -> None:
         mplstyle.use('fast')
         self.title = title
         self.xAxisName = xAxisName
-        self.estimatedDataName = estimatedDataName
-        self.commandDataname = commandDataname
-        self.actualCommandDataName = actualCommandDataName
+        self.feedForward = feedForward
+        self.p = p
+        self.i = i
+        self.d = d
+        self.total = total
         self.parent = parent
         self.fig = Figure(dpi = 50)
         self.data = data
@@ -32,49 +34,27 @@ class Graph:
         self.canvas.get_tk_widget().grid(row = 0, column=0 , sticky=(N,E,S,W))
         # self.parent.bind("<Configure>",self.resize)
 
-
     def draw(self):
         self.ax.clear()
         time = self.data[self.xAxisName]
-        yCommaand = self.data[self.commandDataname]
-        yEsitmated = self.data[self.estimatedDataName]
+        feedForward = self.data[self.feedForward]
+        p = self.data[self.p]
+        i = self.data[self.i]
+        d = self.data[self.d]
+        total = self.data[self.total]
+
+
         self.ax.tick_params(axis='both', which='major', labelsize=16)
 
-        if self.actualCommandDataName == None:
-            self.ax.plot(time, yCommaand, 'b-',label="Command")
-            self.ax.plot(time, yEsitmated,'r-',label="Estimate")
-        else:
-            actualCommand = self.data[self.actualCommandDataName]
-            self.ax.plot(time, yCommaand, 'b-o',label="Command")
-            self.ax.plot(time, yEsitmated,'r-',label="Estimate")
-            self.ax.plot(time, actualCommand, 'k-x', label = "Actual")
+        self.ax.plot(time, feedForward, 'b-+',label="feedForward")
+        self.ax.plot(time, p, 'r-h',label="p")
+        self.ax.plot(time, i, 'g-o',label="i")
+        self.ax.plot(time, d, 'k-p',label="d")
+        self.ax.plot(time, total, 'm-',label="total")
 
-        # if time > 20:
-        #     pass
-        # else:
         plt.xticks(np.arange(max(time)-20, max(time), 1.0))
-        
-        yCmin = min(yCommaand)
-        yEmin = min(yEsitmated)
-        yCmax = max(yCommaand)
-        yEmax = max(yEsitmated)
 
-        ymin = 0
-        ymax = 0
-        if yCmin < yEmin:
-            ymin=yCmin
-        else:
-            ymin=yEmin
-        if yCmax > yEmax:
-            ymax=yCmax
-        else:
-            ymax=yEmax
-        if self.title == 'ThetaGraph' or self.title == "ArmGraph":
-            self.ax.set_ylim([ymin-10,ymax+10])
-            # plt.yticks(np.arange(-1, 370, 45.0), fontsize=16)
-        else:
-            self.ax.set_ylim([ymin-.5,ymax+.5])
-            # plt.yticks(np.arange(-1, 8, 1.0), fontsize=16)
+        self.ax.set_ylim([-1.1,1.1])
 
         self.ax.legend(fontsize=16)
         self.fig.suptitle(self.title, fontsize=16)
