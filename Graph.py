@@ -55,8 +55,8 @@ class Graph:
             self.ax.plot(time, yEsitmated,'r-',label="Estimate")
             self.ax.plot(time, actualCommand, 'k-x', label = "Actual")
 
-        if max(time) > 20:
-            self.ax.set_xlim([max(time)-20, max(time)])
+        # if max(time) > 20:
+            # self.ax.set_xlim([max(time)-20, max(time)])
             
         plt.xticks(np.arange(max(time), max(time), 1.0))
         

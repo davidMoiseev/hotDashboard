@@ -59,8 +59,8 @@ class PIDGraph:
         self.ax.plot(time, d, 'k-p',label="d")
         self.ax.plot(time, total, 'm-',label="total")
 
-        if max(time) > 20:
-            self.ax.set_xlim([max(time)-20, max(time)])
+        # if max(time) > 20:
+            # self.ax.set_xlim([max(time)-20, max(time)])
 
         plt.xticks(np.arange(max(time), max(time), 1.0))
 
