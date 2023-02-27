@@ -27,8 +27,12 @@ class FakeConnection:
         self.ipAddress.grid(column = 2, row = 0,sticky=(W))
         self.drivetrainButton = ttk.Button(self.frame, text="Drivetrain", command=self.drivetrainButton)
         self.drivetrainButton.grid(column=0, row=1, sticky=(W))
-        self.armButton = ttk.Button(self.frame, text="Arm", command=self.armButton)
-        self.armButton.grid(column=1, row=1, sticky=(W))
+        self.elbowButton = ttk.Button(self.frame, text="Elbow", command=self.setElbow)
+        self.elbowButton.grid(column=1, row=1, sticky=(W))
+        self.shoulderButton = ttk.Button(self.frame, text="Shoulder", command=self.setShoulder)
+        self.shoulderButton.grid(column=1, row=1, sticky=(W))
+        self.extensionButton = ttk.Button(self.frame, text="Etension", command=self.setExtension)
+        self.extensionButton.grid(column=1, row=1, sticky=(W))
         self.intakeButton = ttk.Button(self.frame, text="Intake", command=self.intakeButton)
         self.intakeButton.grid(column=2, row=1, sticky=(W))
         self.getScreenButton = ttk.Button(self.frame, text="Get Screen Type", command=self.getScreenType)
@@ -44,7 +48,7 @@ class FakeConnection:
         self.var = 0
 
     def fakeRobot(self):
-        print(self.robotMode)
+        # print(self.robotMode)
         
         if (self.robotModePrev != self.robotMode and self.robotModePrev == "Disabled"):
             for variable in self.data:
@@ -77,19 +81,23 @@ class FakeConnection:
         if(self.robotMode == "Disabled"):
             self.robotMode = "Fake"
             self.varSmall = 0
-            self.time = 0
             self.var = 0
         else:
             self.robotMode = "Disabled"
             self.varSmall = 0
-            self.time = 0
             self.var = 0
 
     def drivetrainButton(self):
         self.screenType = "Drivetrain"
 
-    def armButton(self):
-        self.screenType = "Arm"
+    def setElbow(self):
+        self.screenType = "Elbow"
+
+    def setShoulder(self):
+        self.screenType = "Shoulder"
+
+    def setExtension(self):
+        self.screenType = "Extension"
 
     def intakeButton(self):
         self.screenType = "Intake"

@@ -25,12 +25,15 @@ class ConnectionIndicator:
 
         self.drivetrainButton = ttk.Button(self.frame, text="Drivetrain", command=self.drivetrainButton)
         self.drivetrainButton.grid(column=0, row=1, sticky=(W))
-        self.armButton = ttk.Button(self.frame, text="Arm", command=self.armButton)
-        self.armButton.grid(column=1, row=1, sticky=(W))
-        self.intakeButton = ttk.Button(self.frame, text="Intake", command=self.intakeButton)
-        self.intakeButton.grid(column=2, row=1, sticky=(W))
+        self.elbowButton = ttk.Button(self.frame, text="Elbow", command=self.setElbow)
+        self.elbowButton.grid(column=1, row=1, sticky=(W))
+        self.shoulderButton = ttk.Button(self.frame, text="Shoulder", command=self.setShoulder)
+        self.shoulderButton.grid(column=2, row=1, sticky=(W))
+        self.extensionButton = ttk.Button(self.frame, text="Etension", command=self.setExtension)
+        self.extensionButton.grid(column=3, row=1, sticky=(W))
+
         self.getScreenButton = ttk.Button(self.frame, text="Get Screen Type", command=self.getScreenType)
-        self.getScreenButton.grid(column=3, row=1, sticky=(W))
+        self.getScreenButton.grid(column=4, row=1, sticky=(W))
 
         self. ipAddress = Label(self.frame,
                             text = self.ip,
@@ -51,7 +54,6 @@ class ConnectionIndicator:
         self.FMS = self.inst.getTable("FMSInfo")
         self.robotModePrev = ""
 
-
     def connectToRobot(self):
         if not self.inst.isConnected:
             identity = basename(__file__)
@@ -65,11 +67,13 @@ class ConnectionIndicator:
             self.sd = self.inst.getTable("SmartDashboard")
             self.FMS = self.inst.getTable("FMSInfo")
         robotMode = self.sd.getValue("Robot Mode","")
-        print(robotMode)
+        # print(robotMode)
         
         if (self.robotModePrev != robotMode and self.robotModePrev == "Disabled"):
             for variable in self.data:
                 self.data[variable] = []
+            # for graph in self.graphs:
+            #     graph.reset()
         elif robotMode != "Disabled":
             for variable in self.variablesToLog:
                 if variable != "Robot Mode":
@@ -82,14 +86,23 @@ class ConnectionIndicator:
                     graph.replace()
                 else:
                     graph.parent.grid_remove()
+
+        # print(self.screenType)
+        
         self.robotModePrev = robotMode
         self.parent.after(10,self.connectToRobot)
 
     def drivetrainButton(self):
         self.screenType = "Drivetrain"
 
-    def armButton(self):
-        self.screenType = "Arm"
+    def setElbow(self):
+        self.screenType = "Elbow"
+
+    def setShoulder(self):
+        self.screenType = "Shoulder"
+
+    def setExtension(self):
+        self.screenType = "Extension"
 
     def intakeButton(self):
         self.screenType = "Intake"

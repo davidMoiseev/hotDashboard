@@ -42,6 +42,9 @@ class PIDGraph:
     def replace(self):
         self.parent.grid(row=self.row,column=self.column,sticky=(N, W, S,E),padx=10, pady=10)
 
+    def reset(self):
+        self.startTime = self.data[self.xAxisName]
+
     def draw(self):
         self.ax.clear()
         time = self.data[self.xAxisName]
@@ -61,6 +64,9 @@ class PIDGraph:
 
         # if max(time) > 20:
             # self.ax.set_xlim([max(time)-20, max(time)])
+
+        # if max(time) > self.startTime+20:
+        #     self.ax.set_xlim([max(time)-20, max(time)])
 
         plt.xticks(np.arange(max(time), max(time), 1.0))
 

@@ -25,6 +25,8 @@ class Graph:
         self.data = data
         self.fig.clear()
         self.ax = self.fig.add_subplot(111)
+        self.startTime = 0
+        self.addVarManager = addVarManager
         if addVarManager:
             self.varManager = VarManager.VarManager(self.parent,self.data)
             self.parent.columnconfigure(0, weight=1)
@@ -38,6 +40,9 @@ class Graph:
 
     def replace(self):
         self.parent.grid(row=self.row,column=self.column,sticky=(N, W, S,E),padx=10, pady=10)
+
+    def reset(self):
+        self.startTime = self.data[self.xAxisName]
 
     def draw(self):
         self.ax.clear()
@@ -55,26 +60,18 @@ class Graph:
             self.ax.plot(time, yEsitmated,'r-',label="Estimate")
             self.ax.plot(time, actualCommand, 'k-x', label = "Actual")
 
-        # if max(time) > 20:
-            # self.ax.set_xlim([max(time)-20, max(time)])
+        # if max(time) > self.startTime+20:
+        #     self.ax.set_xlim([max(time)-20, max(time)])
             
         plt.xticks(np.arange(max(time), max(time), 1.0))
         
-        yCmin = min(yCommaand)
-        yEmin = min(yEsitmated)
-        yCmax = max(yCommaand)
-        yEmax = max(yEsitmated)
-
-        ymin = 0
-        ymax = 0
-        if yCmin < yEmin:
-            ymin=yCmin
+        if self.addVarManager:
+            ymax = max([max(yEsitmated),max(yCommaand),max(actualCommand)])
+            ymin = min([min(yEsitmated),min(yCommaand),min(actualCommand)])
         else:
-            ymin=yEmin
-        if yCmax > yEmax:
-            ymax=yCmax
-        else:
-            ymax=yEmax
+            ymax = max([max(yEsitmated),max(yCommaand)])
+            ymin = min([min(yEsitmated),min(yCommaand)])
+        
         if self.title == 'ThetaGraph' or self.title == "ArmGraph":
             self.ax.set_ylim([ymin-10,ymax+10])
             # plt.yticks(np.arange(-1, 370, 45.0), fontsize=16)
