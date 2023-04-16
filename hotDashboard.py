@@ -8,7 +8,9 @@ import PIDGraph
 import ctypes
 import FakeConnection
 
-test = False
+import MotorGraph
+
+test = True
 
 variablesToLog=['FPGA Time', "Match Time","Commanded X","Estimated X","Commanded Y","Estimated Y","Commanded Theta","Estimated Theta",'Robot Mode',
                 'Elbow Command', 'Elbow Angle', 'Elbow FeedForward', "Elbow Proportional", "Elbow Integral", "Elbow Derviative", "Elbow Total Command",
@@ -16,7 +18,8 @@ variablesToLog=['FPGA Time', "Match Time","Commanded X","Estimated X","Commanded
                 'Shoulder Command', 'Shoulder Angle', 'Shoulder FeedForward', "Shoulder Proportional", "Shoulder Integral", "Shoulder Derviative", "Shoulder Total Command",
                 'Shoulder Command Actual',
                 'Extension Command', 'Extension', 'Extension FeedForward', "Extension Proportional", "Extension Integral", "Extension Derviative", "Extension Total Command",
-                'Extension Command Actual']
+                'Extension Command Actual',
+                'Left Front', 'Right Front', 'Left Rear', 'Right Rear']
 
 controlVariables = ["Commanded X","Estimated X","Commanded Y", "Robot Mode"]
 
@@ -38,6 +41,7 @@ content = ttk.Frame(root)
 xFrame = Frame(root)
 yFrame = Frame(root)
 thetaFrame = Frame(root)
+motorFrame = Frame(root)
 elbowFrame = Frame(root)
 elbowPidFrame = Frame(root)
 shoulderFrame = Frame(root)
@@ -51,6 +55,8 @@ yGraph = Graph.Graph(yFrame,data,title="YGraph",xAxisName=variablesToLog[0],comm
                         row=2,column=0)
 thetaGraph = Graph.Graph(thetaFrame,data,title="ThetaGraph",xAxisName=variablesToLog[0],commandDataname=variablesToLog[6],estimatedDataName=variablesToLog[7], graphType="Drivetrain",
                           row=1,column=1)
+motorGraph = MotorGraph.MotorGraph(motorFrame,data,title="MotorGraph",xAxisName=variablesToLog[0], leftFront=variablesToLog[33], rightFront=variablesToLog[34],
+                                   leftRear=variablesToLog[35], rightRear=variablesToLog[36], graphType="Drivetrain", row=2, column=1)
 
 elbowGraph = Graph.Graph(elbowFrame,data,title="ElbowGraph",xAxisName=variablesToLog[0],commandDataname=variablesToLog[9],estimatedDataName=variablesToLog[10],actualCommandDataName=variablesToLog[16], graphType="Elbow",
                        row=1,column=0)
@@ -78,7 +84,7 @@ name = ttk.Entry(root)
 
 if not test:
     # fileHandler = FileHandler.FileHandler(root,graphs=[xGraph,yGraph,thetaGraph],data = data)
-    connectionIndication = ConnectionIndicator.ConnectionIndicator(root,graphs=[xGraph,yGraph,thetaGraph,elbowGraph,elbowPidGraph, shoulderGraph, shoulderPidGraph, extensionGraph, extensionPidGraph],data=data,variablesToLog=variablesToLog)
+    connectionIndication = ConnectionIndicator.ConnectionIndicator(root,graphs=[xGraph,yGraph,thetaGraph,motorGraph, elbowGraph,elbowPidGraph, shoulderGraph, shoulderPidGraph, extensionGraph, extensionPidGraph],data=data,variablesToLog=variablesToLog)
 else:
     connectionIndication = FakeConnection.FakeConnection(root,graphs=[xGraph,yGraph,thetaGraph,elbowGraph,elbowPidGraph, shoulderGraph, shoulderPidGraph, extensionGraph, extensionPidGraph],data=data,variablesToLog=variablesToLog, controlVariables=controlVariables)
 
